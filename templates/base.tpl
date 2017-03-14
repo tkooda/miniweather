@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>miniweather.us{% if city and state and zip %}{{city}}, {{state}}  ({{zip}}){% endif %}</title>
+<title>MiniWeather.US{% if city and state and zip %}{{city}}, {{state}}  ({{zip}}){% endif %}</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
@@ -11,7 +11,7 @@
 
 <table width="100%">
  <tr>
-  <td><a href="/">miniweather.us</a> : {% if city and state and zip %}{{city}}, {{state}}  ({{zip}}) : {% endif %}
+  <td><a href="/">MiniWeather.US</a> : {% if city and state and zip %}{{city}}, {{state}}  ({{zip}}) : {% endif %}
   <input id="autocomplete" placeholder="Enter a city" onFocus="geolocate()" type="text"></input></td>
   <td align="right">{%if zip %}<a href="http://m.weather.com/weather/tenday/{{zip}}">Ten day forecast</a>{% else %}<a href="https://github.com/tkooda/miniweather">source</a>{% endif %}</td>
 </tr>
