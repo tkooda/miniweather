@@ -3,17 +3,11 @@
 var key = 'AIzaSyCILANmgIcwkai7OlOpUj03Jhp5yRXV48A';
 
 
-function isInteger(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n) && parseFloat(n) > 0;
-}
-
-
 // detect carriage return in input field.. -> redirect to /zip/$zip ..
 window.onload = function () {
   document.getElementById("autocomplete").onkeydown = function (e) {
     if ( e.keyCode === 13 ) {
-      console.log( "RETURN KEY: " + document.getElementById("autocomplete").value );
-// FIXME: maybe check for zip here??
+//      console.log( "RETURN KEY: " + document.getElementById("autocomplete").value );
       redirect_to_zip_using_address( document.getElementById("autocomplete").value );
       return false;
     }
@@ -21,13 +15,12 @@ window.onload = function () {
 }
 
 
-
 // redirect to /zip/$zip using latitude + longitude ..
 function redirect_to_zip_using_latlng( lat, lng ) {
   var url = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + key + '&latlng=' + lat + ',' + lng;
-console.log( "url latlng: " + url );
+//console.log( "url latlng: " + url );
   $.getJSON( url, function( data ) {
-console.log( "status: " + data['status'] );
+//console.log( "status: " + data['status'] );
     var zip = 0;
     $.each( data[ 'results' ][ 0 ][ 'address_components' ] , function( key, val ) {
       if ( val[ 'types' ] == 'postal_code' ) {
@@ -35,12 +28,13 @@ console.log( "status: " + data['status'] );
         return false; // break
       }
     });
-console.log( "latlng redir to zip: " + zip );
+//console.log( "latlng redir to zip: " + zip );
     if (zip != 0) {
-//window.location.replace( "/zip/" + zip );
+//window.location.replace( "/zip/" + zip ); // ~SPA
       window.location.href = "/zip/" + zip.toString();
       return false;
-    } else console.log( "ERROR: zip is zero: " + lat + ", " + lng );
+    }
+// else console.log( "ERROR: zip is zero: " + lat + ", " + lng );
   });
 }
 
@@ -48,9 +42,9 @@ console.log( "latlng redir to zip: " + zip );
 // redirect to /zip/$zip using (e.g.) "city, state, country" ..
 function redirect_to_zip_using_address( address ) {
   var url = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + key + '&address=' + encodeURIComponent( address );
-console.log( "url address: " + url );
+//console.log( "url address: " + url );
   $.getJSON( url, function( data ) {
-    console.log( "status: " + data['status'] );
+//    console.log( "status: " + data['status'] );
     var lat = data[ 'results' ][ 0 ][ 'geometry' ][ 'location' ][ 'lat' ]; // just guess first response is good?
     var lng = data[ 'results' ][ 0 ][ 'geometry' ][ 'location' ][ 'lng' ];
     redirect_to_zip_using_latlng( lat, lng );
@@ -69,6 +63,7 @@ var componentForm = {
   country: 'long_name',
   postal_code: 'short_name'
 };
+
 
 function initAutocomplete() {
   // Create the autocomplete object, restricting the search to geographical
@@ -111,6 +106,7 @@ function processAddress() {
 //console.log( "citystatecountry:" + city + ", " + state + ", " + country );
   redirect_to_zip_using_address( city + ", " + state + ", " + country )
 }
+
 
 // Bias the autocomplete object to the user's geographical location,
 // as supplied by the browser's 'navigator.geolocation' object.
